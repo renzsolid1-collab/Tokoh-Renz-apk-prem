@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Renzcline Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1e2150;--bg2:#2a2e6b;--card:#f7f7fb;--ink:#14163a;--muted:#5b5f8a;--amber:#ffb703;--ok:#1fa67a;--err:#d6455d;--line:#d9daea}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Sora',system-ui,sans-serif;color:var(--ink);background:radial-gradient(1200px 600px at 50% -10%,var(--bg2),var(--bg));background-attachment:fixed;min-height:100vh;padding:16px 16px 60px}
+.wrap{max-width:560px;margin:0 auto}
+.hidden{display:none!important}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 0 14px}
+.brand{color:#fff;font-weight:800;font-size:22px;letter-spacing:-.02em;margin:0}
+.chip{background:var(--amber);color:var(--ink);font-weight:800;border-radius:99px;padding:8px 14px;font-size:14px;text-decoration:none;white-space:nowrap}
+.card{background:var(--card);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 14px 36px rgba(8,9,40,.35)}
+h2{margin:0 0 12px;font-size:17px}
+h3{margin:16px 0 8px;font-size:14px}
+label{display:block;font-size:13px;font-weight:600;margin:12px 0 6px}
+input,select,textarea{width:100%;padding:12px;border:2px solid var(--line);border-radius:10px;font-family:inherit;font-size:15px;background:#fff;color:var(--ink)}
+textarea{min-height:90px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:3px solid rgba(255,183,3,.55);border-color:var(--amber)}
+.row{display:flex;gap:10px}.row>*{flex:1}
+button{margin-top:12px;padding:13px 16px;border:0;border-radius:10px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
+button:disabled{opacity:.6;cursor:wait}
+.primary{background:var(--amber);color:var(--ink);width:100%}
+.ghost{background:#e9eaf5;color:var(--ink)}
+.danger{background:#fde4e8;color:var(--err)}
+.small{padding:8px 12px;font-size:13px;margin-top:0}
+.msg{margin-top:12px;font-size:14px;line-height:1.5}.msg.err{color:var(--err);font-weight:600}.msg.ok{color:var(--ok);font-weight:600}
+.msg a{color:var(--ink);font-weight:800}
+.note{font-size:13px;color:var(--muted);line-height:1.5;margin:0 0 6px}
+.light{color:#cfd1f5;font-size:14px;grid-column:1/-1;text-align:center}
+.foot{color:#cfd1f5;font-size:13px;text-align:center;margin-top:18px}
+.foot a{color:var(--amber);font-weight:700}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.app{background:var(--card);border-radius:14px;padding:10px;cursor:pointer;box-shadow:0 8px 22px rgba(8,9,40,.3)}
+.logo{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;background:#e9eaf5;display:block}
+.logo.ph{display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:800;color:var(--muted)}
+.logo.big{width:96px;height:96px;margin-bottom:10px}
+.app .t{font-weight:800;font-size:15px;margin:8px 0 2px;line-height:1.25}
+.stars{color:#e6a200;letter-spacing:2px;font-size:14px}
+.stars small{color:var(--muted);letter-spacing:0;font-size:12px}
+.price{font-weight:800;margin-top:4px}
+.price.big{font-size:20px;margin:14px 0 0}
+.sheet{position:fixed;inset:0;background:rgba(8,9,40,.65);display:none;align-items:flex-end;justify-content:center;z-index:20}
+.sheet.show{display:flex}
+.sheet .in{background:var(--card);width:100%;max-width:560px;max-height:90vh;overflow:auto;border-radius:18px 18px 0 0;padding:20px;position:relative}
+.sheet .x{position:absolute;right:14px;top:14px}
+.desc{white-space:pre-wrap;font-size:14px;line-height:1.6;color:#33365f}
+ul{margin:0;padding-left:20px;font-size:14px;line-height:1.7}
+.rate{display:flex;gap:6px}
+.rate .st{margin:0;padding:6px 10px;font-size:26px;background:#e9eaf5;color:#b9bbd6;border-radius:10px}
+.rate .st.on{background:var(--amber);color:#fff}
+.bal{font-size:40px;font-weight:800;letter-spacing:-.02em}
+.item{border-top:1px solid var(--line);padding:12px 0}.item:first-child{border-top:0}
+.item .k{font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:.04em}
+.item .meta{font-size:13px;color:var(--muted);margin-top:4px;line-height:1.5}
+.item .act{display:flex;gap:8px;flex-wrap:wrap}.item .act button{margin-top:8px;padding:8px 12px;font-size:13px}
+.mono{font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+#logoPrev{display:none;width:80px;height:80px;object-fit:cover;border-radius:10px;margin-top:8px}
+
+.warn{background:#fff4d6;border:2px solid var(--amber);border-radius:12px;padding:12px;font-size:14px;line-height:1.5;margin-top:12px}
+.warn p{margin:6px 0 0}
+.tabs{display:flex;gap:8px;margin-bottom:14px}.tabs button{flex:1;margin:0;background:rgba(255,255,255,.14);color:#fff}.tabs .on{background:var(--amber);color:var(--ink)}
+.rev{border-top:1px solid var(--line);padding:10px 0;font-size:14px}.rev:first-of-type{border-top:0}
+.rev .who{font-weight:700}.rev .when{color:var(--muted);font-size:12px}
+.stock{font-size:12px;color:var(--muted);margin-top:2px}.stock.out{color:var(--err);font-weight:700}
+.mission{font-size:34px;font-weight:800;letter-spacing:-.02em}
+label.chk{display:flex;gap:8px;align-items:center;font-weight:600}label.chk input{width:auto}
+
+body{background:radial-gradient(900px 500px at 85% -5%,#4b3fd1 0%,transparent 60%),radial-gradient(800px 500px at -10% 10%,#1f8fb8 0%,transparent 55%),linear-gradient(180deg,#171a47,#0f1233);background-attachment:fixed}
+.hero{position:relative;overflow:hidden;border-radius:22px;padding:20px 18px 20px;margin:2px 0 16px;color:#fff;background:linear-gradient(135deg,#6a4cff 0%,#2f7bff 55%,#19c3b0 100%);box-shadow:0 18px 40px rgba(10,12,50,.55)}
+.hero::before{content:"";position:absolute;right:-40px;top:-50px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.16)}
+.hero::after{content:"";position:absolute;right:50px;bottom:-60px;width:120px;height:120px;border-radius:50%;background:rgba(255,183,3,.35)}
+.hero>*{position:relative;z-index:1}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+.hero .brand{font-size:28px;line-height:1.1;margin-top:4px}
+.hero .tag{margin:10px 0 14px;font-size:14px;line-height:1.5;opacity:.95;max-width:30ch}
+.cta{display:inline-block;background:#fff;color:#1e2150;font-weight:800;font-size:14px;text-decoration:none;padding:10px 16px;border-radius:99px;box-shadow:0 8px 18px rgba(10,12,50,.3)}
+.chip.coin{display:flex;align-items:center;gap:7px;box-shadow:0 8px 18px rgba(10,12,50,.3)}
+.chip.coin::before{content:"";width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3b0,#f5a300 70%);box-shadow:inset 0 0 0 2px rgba(120,70,0,.35)}
+.search input{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.22);color:#fff;border-radius:14px;padding:13px 14px}
+.search input::placeholder{color:#c9cbf5}
+.search{margin-bottom:10px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:6px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chips button{flex:0 0 auto;margin:0;padding:8px 14px;font-size:13px;border-radius:99px;background:rgba(255,255,255,.12);color:#fff}
+.chips button.on{background:#fff;color:#1e2150}
+.tabs{background:rgba(255,255,255,.08);padding:5px;border-radius:14px}
+.tabs button{background:transparent;border-radius:10px}
+.tabs .on{background:var(--amber);color:var(--ink);box-shadow:0 6px 14px rgba(255,183,3,.35)}
+.grid{gap:14px}
+.app{position:relative;overflow:hidden;padding:0;border-radius:18px;background:linear-gradient(180deg,#ffffff,#f1f1fb);box-shadow:0 14px 30px rgba(6,8,40,.45);transition:transform .15s ease,box-shadow .15s ease;animation:rise .45s ease both}
+.app:active{transform:scale(.97)}
+.app .pic{position:relative}
+.app .logo{border-radius:0;aspect-ratio:1.15}
+.app .logo.ph{background:linear-gradient(135deg,#6a4cff,#19c3b0);color:#fff;font-size:46px}
+.app .body{padding:10px 12px 14px}
+.badge{position:absolute;left:8px;top:8px;background:rgba(20,22,58,.82);color:#fff;font-size:11px;font-weight:800;padding:4px 9px;border-radius:99px;backdrop-filter:blur(4px)}
+.badge.hot{background:#ff5a3c}.badge.out{background:#d6455d}.badge.perm{background:#1fa67a}
+.app .price{display:inline-flex;align-items:center;gap:6px;background:#fff3cf;color:#7a4b00;border-radius:99px;padding:5px 11px;font-size:13px;margin-top:8px}
+.app .price::before{content:"";width:13px;height:13px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3b0,#f5a300 70%)}
+.card{border-radius:18px}
+.sheet .in{border-radius:24px 24px 0 0;background:linear-gradient(180deg,#ffffff,#f4f4fc)}
+.logo.big{border-radius:18px;box-shadow:0 10px 24px rgba(20,22,58,.25)}
+.primary{background:linear-gradient(135deg,#ffcf3d,#ffa800);box-shadow:0 10px 20px rgba(255,168,0,.35)}
+.foot{opacity:.9}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.grid .app:nth-child(2){animation-delay:.05s}.grid .app:nth-child(3){animation-delay:.1s}.grid .app:nth-child(4){animation-delay:.15s}.grid .app:nth-child(n+5){animation-delay:.2s}
+@media (prefers-reduced-motion:reduce){.app{animation:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="hero-top"><div><div class="eyebrow">Toko aplikasi</div><h1 class="brand">Renzcline Store</h1></div><a class="chip coin" id="coinChip" href="coin.html">Coin</a></div>
+  <p class="tag">Beli aplikasi pakai coin. Dapat 1000 coin gratis tiap hari lewat misi harian.</p>
+  <a class="cta" href="coin.html">Ambil misi harian</a>
+</header>
+
+<section class="card" id="authCard">
+  <div id="guest">
+    <h2>Masuk atau buat nama</h2>
+    <p class="note">Nama dan kata sandi dipakai untuk menyimpan coin dan pembelianmu.</p>
+    <label for="aName">Nama (huruf, angka, titik, strip, tanpa spasi)</label>
+    <input id="aName" maxlength="20" autocomplete="username" autocapitalize="none" placeholder="Contoh: budi.01">
+    <label for="aPin">Kata sandi (minimal 6 karakter)</label>
+    <input id="aPin" type="password" maxlength="40" autocomplete="current-password">
+    <div class="row"><button class="primary" id="btnLogin">Masuk</button><button class="ghost" id="btnReg">Buat nama</button></div>
+    <div class="msg" id="aMsg"></div>
+  </div>
+  <div id="user" class="hidden">
+    <div class="row" style="align-items:center"><div>Halo, <b id="uName"></b></div><div style="text-align:right"><button class="ghost small" id="btnOut">Keluar</button></div></div>
+  </div>
+</section>
+
+<div class="tabs"><button class="on" id="tShop">Toko</button><button id="tHist">Riwayat</button></div>
+<div id="shop">
+  <div class="search"><input id="q" type="search" placeholder="Cari aplikasi..."></div>
+  <div class="chips" id="sortChips"><button class="on" data-s="new">Terbaru</button><button data-s="cheap">Termurah</button><button data-s="top">Rating tertinggi</button></div>
+  <div class="grid" id="grid"></div>
+</div>
+<div id="hist" class="hidden"><section class="card"><h2>Riwayat pembelian</h2><div id="histList"></div></section></div>
+<p class="foot">Dapat coin dari <a href="coin.html">misi harian dan kode redeem</a>. Kendala? WhatsApp 08582828773072</p>
+<div class="sheet" id="sheet"><div class="in" id="sheetIn"></div></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, collection, query, orderBy, limit, where, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyDvdO7-YcCM1exGTSZk_fAfuyWL34TEJaw",
+  authDomain: "renzcline.firebaseapp.com",
+  projectId: "renzcline",
+  storageBucket: "renzcline.firebasestorage.app",
+  messagingSenderId: "921126801335",
+  appId: "1:921126801335:web:37190a9b38f8bd70ebe232",
+  measurementId: "G-Z8TZSQ266R"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app), db = getFirestore(app);
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const WA = "628582828773072"; // 08582828773072
+const ADMIN_EMAIL = "owner@renzstore.app";
+const emailOf = n => n.toLowerCase() + "@renzstore.app";
+const tsMs = t => (t && t.toMillis) ? t.toMillis() : 0;
+const fmt = ms => ms ? new Date(ms).toLocaleString("id-ID", { dateStyle: "medium", timeStyle: "short" }) : "-";
+const withTimeout = (p, ms = 15000) => Promise.race([p, new Promise((_, no) => setTimeout(() => no(new Error("Database tidak merespons. Cek koneksi, Firestore, dan rules.")), ms))]);
+function friendly(e){
+  const c = e && e.code || "";
+  if (c.includes("permission-denied")) return "Ditolak oleh aturan keamanan. Pastikan sudah masuk dan aksinya diizinkan.";
+  if (c.includes("email-already-in-use")) return "Nama itu sudah dipakai. Pakai nama lain, atau tekan Masuk kalau itu akunmu.";
+  if (c.includes("invalid-credential") || c.includes("wrong-password") || c.includes("user-not-found") || c.includes("invalid-login")) return "Nama atau kata sandi salah.";
+  if (c.includes("weak-password")) return "Kata sandi minimal 6 karakter.";
+  if (c.includes("operation-not-allowed")) return "Login Email/Password belum diaktifkan di Firebase Authentication.";
+  if (c.includes("too-many-requests")) return "Terlalu banyak percobaan. Coba lagi beberapa menit lagi.";
+  return (e && e.message) || "Terjadi kesalahan.";
+}
+
+let me = null, busy = false;
+const aMsg = (t, c) => { $("aMsg").textContent = t; $("aMsg").className = "msg " + (c || ""); };
+function cleanName(n){ n = n.trim(); if (!/^[A-Za-z0-9._-]{3,20}$/.test(n)) throw new Error("Nama 3 sampai 20 karakter: huruf, angka, titik, atau strip (tanpa spasi)."); return n; }
+function cleanPass(p){ if (p.length < 6) throw new Error("Kata sandi minimal 6 karakter."); return p; }
+async function loadMe(u){
+  try {
+    let s = await withTimeout(getDoc(doc(db, "users", u.uid)));
+    if (!s.exists() && !busy) {
+      await setDoc(doc(db, "users", u.uid), { name: u.email.split("@")[0], coins: 0, createdAt: serverTimestamp() });
+      s = await getDoc(doc(db, "users", u.uid));
+    }
+    if (s.exists()) { const d = s.data(); me = { uid: u.uid, name: d.name, coins: d.coins || 0, lastMission: tsMs(d.lastMission) }; }
+  } catch (e) { console.error(e); }
+}
+function paintAuth(){
+  $("guest").classList.toggle("hidden", !!me);
+  $("user").classList.toggle("hidden", !me);
+  if (me) $("uName").textContent = me.name;
+  $("coinChip").textContent = me ? (me.coins || 0) + " coin" : "Coin";
+  document.dispatchEvent(new Event("authchange"));
+}
+async function refreshMe(){ me = null; if (auth.currentUser) await loadMe(auth.currentUser); paintAuth(); }
+onAuthStateChanged(auth, async u => { if (busy) return; me = null; if (u) await loadMe(u); paintAuth(); });
+$("btnLogin").onclick = async () => {
+  aMsg("Memproses...");
+  try { const n = cleanName($("aName").value), p = cleanPass($("aPin").value); await signInWithEmailAndPassword(auth, emailOf(n), p); $("aPin").value = ""; aMsg(""); }
+  catch (e) { aMsg(friendly(e), "err"); }
+};
+$("btnReg").onclick = async () => {
+  aMsg("Membuat akun...");
+  try {
+    const n = cleanName($("aName").value), p = cleanPass($("aPin").value);
+    busy = true;
+    const cred = await createUserWithEmailAndPassword(auth, emailOf(n), p);
+    await setDoc(doc(db, "users", cred.user.uid), { name: n, coins: 0, createdAt: serverTimestamp() });
+    busy = false; $("aPin").value = ""; aMsg(""); await refreshMe();
+  } catch (e) { busy = false; aMsg(friendly(e), "err"); }
+};
+$("btnOut").onclick = async () => { await signOut(auth); me = null; paintAuth(); };
+
+let apps = [], cur = null;
+let st = { own: false, rated: false, mine: 0, comment: "", confirm: false, reviews: [] };
+const avg = a => a.ratingCount ? a.ratingSum / a.ratingCount : 0;
+const stars = n => { n = Math.round(n); return "★".repeat(n) + "☆".repeat(5 - n); };
+const isOut = a => !a.unlimited && !(a.stock > 0);
+const stockTxt = a => a.unlimited ? "Permanen (tanpa batas stok)" : (a.stock > 0 ? "Sisa stok: " + a.stock : "Stok habis");
+const sMsg = (t, c) => { const m = $("sMsg"); if (m) { m.textContent = t; m.className = "msg " + (c || ""); } };
+
+$("tShop").onclick = () => { $("tShop").className = "on"; $("tHist").className = ""; $("shop").classList.remove("hidden"); $("hist").classList.add("hidden"); };
+$("tHist").onclick = () => { $("tHist").className = "on"; $("tShop").className = ""; $("hist").classList.remove("hidden"); $("shop").classList.add("hidden"); loadHist(); };
+
+async function loadApps(){
+  $("grid").innerHTML = '<p class="light">Memuat...</p>';
+  try {
+    const snap = await withTimeout(getDocs(query(collection(db, "apps"), orderBy("createdAt", "desc"))));
+    apps = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  } catch (e) { console.error(e); $("grid").innerHTML = '<p class="light">' + esc(friendly(e)) + '</p>'; return; }
+  drawGrid();
+}
+let sortBy = "new";
+function badgeOf(a){
+  if (isOut(a)) return '<span class="badge out">Habis</span>';
+  if (a.unlimited) return '<span class="badge perm">Permanen</span>';
+  if (a.stock <= 3) return '<span class="badge hot">Sisa ' + a.stock + '</span>';
+  return '';
+}
+function drawGrid(){
+  const q = ($("q").value || "").trim().toLowerCase();
+  let list = apps.filter(a => !q || String(a.title).toLowerCase().includes(q) || String(a.desc || "").toLowerCase().includes(q));
+  if (sortBy === "cheap") list = list.slice().sort((a, b) => (a.price || 0) - (b.price || 0));
+  if (sortBy === "top") list = list.slice().sort((a, b) => avg(b) - avg(a));
+  $("grid").innerHTML = list.length ? list.map(a =>
+    '<div class="app" data-id="' + a.id + '"><div class="pic">' +
+    (a.logo ? '<img class="logo" src="' + esc(a.logo) + '" alt="">' : '<div class="logo ph">' + esc((a.title || "?")[0]) + '</div>') + badgeOf(a) + '</div>' +
+    '<div class="body"><div class="t">' + esc(a.title) + '</div>' +
+    '<div class="stars">' + stars(avg(a)) + ' <small>' + (a.ratingCount ? avg(a).toFixed(1) + ' (' + a.ratingCount + ')' : 'Baru') + '</small></div>' +
+    '<div class="price">' + Number(a.price || 0) + ' coin</div></div></div>').join("")
+    : '<p class="light">' + (apps.length ? 'Tidak ada aplikasi yang cocok.' : 'Belum ada aplikasi yang dijual.') + '</p>';
+}
+$("q").addEventListener("input", drawGrid);
+$("sortChips").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  sortBy = b.dataset.s; [...$("sortChips").children].forEach(c => c.classList.toggle("on", c === b)); drawGrid();
+});
+$("grid").addEventListener("click", e => { const c = e.target.closest(".app"); if (c) openApp(c.dataset.id); });
+
+async function loadReviews(id){
+  try {
+    const snap = await withTimeout(getDocs(query(collection(db, "ratings"), where("appId", "==", id))));
+    st.reviews = snap.docs.map(d => d.data()).sort((a, b) => tsMs(b.at) - tsMs(a.at)).slice(0, 30);
+  } catch (e) { console.error(e); st.reviews = []; }
+}
+async function openApp(id){
+  cur = apps.find(a => a.id === id); if (!cur) return;
+  st = { own: false, rated: false, mine: 0, comment: "", confirm: false, reviews: [] };
+  $("tShop").click();
+  if (me) {
+    try {
+      const [p, r] = await Promise.all([getDoc(doc(db, "purchases", me.uid + "_" + id)), getDoc(doc(db, "ratings", me.uid + "_" + id))]);
+      st.own = p.exists(); st.rated = p.exists() && p.data().
